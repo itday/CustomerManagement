@@ -224,17 +224,17 @@ component Sample controlledby application.HeadSceneController {
 											children : [
 												Button {
 													text : "Cancel",
-													minWidth : 100,
+													minWidth : 110,
 													onMouseClicked : controllermethod handleCancle
 												},
 												Button {
 													text : "Reset Details",
-													minWidth : 100,
+													minWidth : 110,
 													onMouseClicked : controllermethod handleReset
 												},
 												Button id saveDetails {
 													text : "Save Details",
-													minWidth : 100,
+													minWidth : 110,
 													disable : true,
 													onMouseClicked : controllermethod handleSave
 												}

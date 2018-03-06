@@ -1,7 +1,5 @@
 package application;
 
-import application.Customer;
-import application.MyDialog;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,8 +75,8 @@ public class HeadSceneController {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         idTableColumn.setMaxWidth(30.0);
         idTableColumn.setMinWidth(30.0);
-        houseNumberTableColumn.setMaxWidth(100.0);
-        houseNumberTableColumn.setMinWidth(100.0);
+        houseNumberTableColumn.setMaxWidth(110.0);
+        houseNumberTableColumn.setMinWidth(110.0);
 
         // enable saveDetails button
         if (!saveButtonEnabledByDefault) {
@@ -235,7 +233,7 @@ public class HeadSceneController {
     public void handleModify() {
         activeCustomer = (Customer) tableView.getSelectionModel().getSelectedItem();
         if (activeCustomer == null) {
-            MyDialog.error(null, "No line selected!");
+            MyDialog.error(null, "No line selected!").showAndWait();
         } else {
             tabPane.getSelectionModel().select(tabDetail);
             loadCustomer();
@@ -246,7 +244,7 @@ public class HeadSceneController {
     public void handleDelete() {
         activeCustomer = (Customer) tableView.getSelectionModel().getSelectedItem();
         if (activeCustomer == null) {
-            MyDialog.error(null, "No line selected!");
+            MyDialog.error(null, "No line selected!").showAndWait();
         } else {
             data.remove((Object) activeCustomer);
         }
@@ -268,15 +266,15 @@ public class HeadSceneController {
     public void handleSave() {
         if (checkFields()) {
             if (saveCustomer()) {
-                MyDialog.info(null, "Customer was saved successfully.");
+                MyDialog.info(null, "Customer was saved successfully.").showAndWait();
             } else {
-                MyDialog.error(null, "Nothing changed!");
+                MyDialog.error(null, "Nothing changed!").showAndWait();
             }
             activeCustomer = null;
             loadCustomer();
             tabPane.getSelectionModel().select(tabList);
         } else {
-            MyDialog.error(null, msg);
+            MyDialog.error(null, msg).showAndWait();
         }
     }
 }
