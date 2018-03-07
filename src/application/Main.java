@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Map.Entry;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +14,16 @@ public class Main extends Application {
     private static final double HEIGHT = 700.0D;
     private static final double WEIDTH = 480.0D;
 
+    public static boolean saveButtonEnabled = true;  // by true: saving is always possible
+                                                     // by false: saving is only by correct values possible
+    public static boolean hardNameChecking  = false; // by true: forbidden: "von Helen" allowed: "Von Helen"
+                                                     // by false: forbidden: "von helen" allowed: "von Helen"
+
     public Main() {}
 
     public void start(Stage primaryStage) {
+        setParameters();
+
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/application/fxml/HeadScene.fxml"));
 
@@ -33,6 +42,21 @@ public class Main extends Application {
             e.printStackTrace();
             primaryStage.close();
             Platform.exit();
+        }
+    }
+
+    private void setParameters() {
+        for (Entry<String, String> e : getParameters().getNamed().entrySet()) {
+            switch (e.getKey().toLowerCase()) {
+                case "hardnamechecking":
+                    hardNameChecking = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
+                    break;
+
+                case "savebuttonenabled":
+                    saveButtonEnabled = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
+                    break;
+            }
+
         }
     }
 

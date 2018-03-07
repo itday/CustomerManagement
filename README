@@ -1,0 +1,22 @@
+#
+# Customer Management
+#
+
+#
+# Version
+VERSION=1.2
+
+#
+# Parameters
+declaration: --<NAME>=<VALUE>
+
+saveButtonEnabled:
+  by true: saving is always possible (details tab)
+  by false: saving is only by correct values possible (details tab)
+  
+hardNameChecking:
+  by true: forbidden: "von Helen" allowed: "Von Helen"
+  by false: forbidden: "von helen" allowed: "von Helen"
+
+#
+# eof ..

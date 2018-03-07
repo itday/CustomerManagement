@@ -49,10 +49,11 @@ public class HeadSceneController {
 
     @FXML Button saveDetails;
 
-    public static final boolean saveButtonEnabledByDefault = true;
-    public static final String  nameCheckPattern           = "^[A-ZÄÖÜ][a-züöä]{2,19}((\\-|\\s)[A-ZÄÖÜ][a-zäöüc]{2,19}){0,3}$";
-    public static final String  houseNumberCheckPattern    = "^\\d{1,3}[a-z]?$";
-    String                      msg;
+    public static final String nameCheckPattern                                       = "^[a-zA-ZÜÖÄüöäß]{3,19}((\\-|\\s)[A-ZÄÖÜa-zäöüß]{3,19}){0,3}$";
+    public static final String nameCheckPatternUpperCaseLetterWordBeginning           = "^[A-ZÄÖÜ][a-züöäß]{2,19}((\\-|\\s)[A-ZÄÖÜ][a-zäöüß]{2,19}){0,3}$";
+    public static final String nameCheckPatternAtLeastOneUpperCaseLetterWordBeginning = "[A-ZÄÖÜ][a-züöäß]{2,19}";
+    public static final String houseNumberCheckPattern                                = "^\\d{1,3}[a-z]?$";
+    String                     msg;
 
     /*
      * GUI actions
@@ -79,7 +80,9 @@ public class HeadSceneController {
         houseNumberTableColumn.setMinWidth(110.0);
 
         // enable saveDetails button
-        if (!saveButtonEnabledByDefault) {
+        if (Main.saveButtonEnabled) {
+            saveDetails.setDisable(false);
+        } else {
             ChangeListener<String> listener = (a, b, c) -> {
                 saveDetails.setDisable(!checkFields());
             };
@@ -89,8 +92,8 @@ public class HeadSceneController {
             firstNameField.textProperty().addListener(listener);
             houseNumberField.textProperty().addListener(listener);
             zipCodeField.textProperty().addListener(listener);
-        } else
-            saveDetails.setDisable(false);
+        }
+
     }
 
     public void draw(Scene scene) {
@@ -209,8 +212,13 @@ public class HeadSceneController {
     }
 
     private boolean nameCheck(String tmp) {
-        Matcher m = Pattern.compile(nameCheckPattern).matcher(tmp);
-        return m.find();
+        if (Main.hardNameChecking) {
+            return Pattern.compile(nameCheckPatternUpperCaseLetterWordBeginning).matcher(tmp).find();
+        } else {
+            Matcher m = Pattern.compile(nameCheckPattern).matcher(tmp);
+            Matcher mm = Pattern.compile(nameCheckPatternAtLeastOneUpperCaseLetterWordBeginning).matcher(tmp);
+            return m.find() && mm.find();
+        }
     }
 
     private boolean houseNummberCheck(String tmp) {
