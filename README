@@ -2,21 +2,28 @@
 # Customer Management
 #
 
-#
-# Version
-VERSION=1.2
+Version: 1.3
+Autor: Sebastian Müller
 
 #
 # Parameters
 declaration: --<NAME>=<VALUE>
 
 saveButtonEnabled:
-  by true: saving is always possible (details tab)
-  by false: saving is only by correct values possible (details tab)
+  by true (default): Save button in details tab is always enabled (checks are executed after clicking save)
+  by false:          Save button is only enabled when checks are passed
   
 hardNameChecking:
-  by true: forbidden: "von Helen" allowed: "Von Helen"
-  by false: forbidden: "von helen" allowed: "von Helen"
+  by true:            forbidden: "von Helen" allowed: "Von Helen"
+  by false (default): forbidden: "von helen" allowed: "von Helen"
+
+#
+# Third party licenses 
+Icon made from Icon Fonts (http://www.onlinewebfonts.com/icon) is licensed by CC BY 3.0.
+
+#
+# Licence
+Creative Commons by 3.0
 
 #
 # eof ..

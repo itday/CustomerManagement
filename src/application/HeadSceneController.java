@@ -25,6 +25,7 @@ public class HeadSceneController {
     /*
      * tabList
      */
+
     @FXML TableView<Customer>            tableView;
     private ObservableList<Customer>     data;
     @FXML TableColumn<Customer, Integer> idTableColumn;
@@ -35,6 +36,7 @@ public class HeadSceneController {
     /*
      * detailsTab
      */
+
     private Customer activeCustomer;
 
     @FXML Pane       detailsPane;
@@ -49,11 +51,14 @@ public class HeadSceneController {
 
     @FXML Button saveDetails;
 
+    // Patterns for check
     public static final String nameCheckPattern                                       = "^[a-zA-ZÜÖÄüöäß]{3,19}((\\-|\\s)[A-ZÄÖÜa-zäöüß]{3,19}){0,3}$";
     public static final String nameCheckPatternUpperCaseLetterWordBeginning           = "^[A-ZÄÖÜ][a-züöäß]{2,19}((\\-|\\s)[A-ZÄÖÜ][a-zäöüß]{2,19}){0,3}$";
     public static final String nameCheckPatternAtLeastOneUpperCaseLetterWordBeginning = "[A-ZÄÖÜ][a-züöäß]{2,19}";
     public static final String houseNumberCheckPattern                                = "^\\d{1,3}[a-z]?$";
-    String                     msg;
+
+    // Message string for errors
+    private String msg;
 
     /*
      * GUI actions
@@ -62,7 +67,7 @@ public class HeadSceneController {
     public void initialize() {
         data = tableView.getItems();
 
-        // examples
+        // Examples
         data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "1"));
         data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "1b"));
         data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "12b"));
@@ -79,7 +84,7 @@ public class HeadSceneController {
         houseNumberTableColumn.setMaxWidth(110.0);
         houseNumberTableColumn.setMinWidth(110.0);
 
-        // enable saveDetails button
+        // Enable saveDetails button
         if (Main.saveButtonEnabled) {
             saveDetails.setDisable(false);
         } else {

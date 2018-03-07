@@ -14,10 +14,19 @@ public class Main extends Application {
     private static final double HEIGHT = 700.0D;
     private static final double WEIDTH = 480.0D;
 
-    public static boolean saveButtonEnabled = true;  // by true: saving is always possible
-                                                     // by false: saving is only by correct values possible
-    public static boolean hardNameChecking  = false; // by true: forbidden: "von Helen" allowed: "Von Helen"
-                                                     // by false: forbidden: "von helen" allowed: "von Helen"
+    /**
+     * Flag: Save button in details view/tab enabeld or not.
+     * <br><code>true</code> (default): Save button in details tab is always enabled (checks are executed after clicking save)
+     * <br><code>false</code>:          Save button is only enabled when checks are passed
+     */
+    public static boolean saveButtonEnabled = true; //
+
+    /**
+     * Flag about name checking in details tab.
+     * <br><code>true</code>             forbidden: "von Helen" allowed: "Von Helen"
+     * <br><code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
+     */
+    public static boolean hardNameChecking = false;
 
     public Main() {}
 
