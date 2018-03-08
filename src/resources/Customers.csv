@@ -1,0 +1,10 @@
+# Customers file
+#
+# Id, family name, first name, ZIP code, city, street, houseNumber
+;Mustermann;Max;12345;München;Putzbrunner;2a
+;Mustermann;Max;12345;München;Putzbrunner;2b
+;Mustermann;Max;12345;München;Putzbrunner;2c
+;Mustermann;Max;12345;München;Putzbrunner;2d
+;Mustermann;Max;12345;München;Putzbrunner;2e
+#
+# eof ..

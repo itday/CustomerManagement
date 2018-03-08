@@ -150,17 +150,21 @@ component Sample controlledby application.HeadSceneController {
 											TextField id familyNameField {
 												promptText : "Mustermann",
 												static rowIndex : 0,
-												static columnIndex : 1
+												static columnIndex : 1,
+												onKeyReleased : controllermethod handleEnterSave
+
 											},
 											TextField id streetField {
 												promptText : "Musterstraße",
 												static rowIndex : 1,
-												static columnIndex : 1
+												static columnIndex : 1,
+												onKeyReleased : controllermethod handleEnterSave
 											},
 											TextField id cityField {
 												promptText : "München",
 												static rowIndex : 2,
-												static columnIndex : 1
+												static columnIndex : 1,
+												onKeyReleased : controllermethod handleEnterSave
 											},
 											// Right side
 											Label {
@@ -199,17 +203,20 @@ component Sample controlledby application.HeadSceneController {
 											TextField id firstNameField {
 												promptText : "Max",
 												static rowIndex : 0,
-												static columnIndex : 4
+												static columnIndex : 4,
+												onKeyReleased : controllermethod handleEnterSave
 											},
 											TextField id houseNumberField {
 												promptText : "2b",
 												static rowIndex : 1,
-												static columnIndex : 4
+												static columnIndex : 4,
+												onKeyReleased : controllermethod handleEnterSave
 											},
 											TextField id zipCodeField {
 												promptText : "85521",
 												static rowIndex : 2,
-												static columnIndex : 4
+												static columnIndex : 4,
+												onKeyReleased : controllermethod handleEnterSave
 											}
 										]
 									},

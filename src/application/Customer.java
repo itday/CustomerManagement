@@ -2,7 +2,7 @@ package application;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class Customer {
+public class Customer implements Comparable<Customer> {
     private javafx.beans.property.SimpleIntegerProperty id          = new javafx.beans.property.SimpleIntegerProperty();
     private SimpleStringProperty                        familyName  = new SimpleStringProperty("");
     private SimpleStringProperty                        firstName   = new SimpleStringProperty("");
@@ -81,8 +81,23 @@ public class Customer {
         this.houseNumber.set(houseNumber);
     }
 
+    @Override
+    public int compareTo(Customer c) {
+        if (c.getId() == getId())
+            return 0;
+        else if (c.getId() > getId())
+            return -1;
+        else
+            return 1;
+    }
+
+    @Override
     public String toString() {
-        return "Customer [id=" + id + ", familyName=" + familyName + ", firstName=" + firstName + ", zipCode=" + zipCode + ", city=" + city
-            + ", street=" + street + ", houseNumber=" + houseNumber + "]";
+        return "Customer [id: " + id.get() + ", familyName: " + familyName.get() + ", firstName: " + firstName.get() + ", zipCode: "
+            + zipCode.get() + ", city: " + city.get() + ", street: " + street.get() + ", houseNumber: " + houseNumber.get() + "]";
+    }
+
+    public String toSimpleStringWithoutId() {
+        return familyName.get() + firstName.get() + zipCode.get() + city.get() + street.get() + houseNumber.get();
     }
 }

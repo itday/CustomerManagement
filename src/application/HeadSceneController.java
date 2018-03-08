@@ -1,8 +1,8 @@
 package application;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +13,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
@@ -51,13 +53,8 @@ public class HeadSceneController {
 
     @FXML Button saveDetails;
 
-    // Patterns for check
-    public static final String nameCheckPattern                                       = "^[a-zA-ZÜÖÄüöäß]{3,19}((\\-|\\s)[A-ZÄÖÜa-zäöüß]{3,19}){0,3}$";
-    public static final String nameCheckPatternUpperCaseLetterWordBeginning           = "^[A-ZÄÖÜ][a-züöäß]{2,19}((\\-|\\s)[A-ZÄÖÜ][a-zäöüß]{2,19}){0,3}$";
-    public static final String nameCheckPatternAtLeastOneUpperCaseLetterWordBeginning = "[A-ZÄÖÜ][a-züöäß]{2,19}";
-    public static final String houseNumberCheckPattern                                = "^\\d{1,3}[a-z]?$";
-
     // Message string for errors
+    private String header;
     private String msg;
 
     /*
@@ -67,15 +64,8 @@ public class HeadSceneController {
     public void initialize() {
         data = tableView.getItems();
 
-        // Examples
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "1"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "1b"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "12b"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "122b"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "1c"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "2"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "3"));
-        data.add(new Customer(++entryCounter, "Musterman", "Max", "12345", "München", "Dachauer", "55"));
+        // load data
+        loadData();
 
         // tableView resizing
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -131,14 +121,16 @@ public class HeadSceneController {
     }
 
     public boolean saveCustomer() {
-        if (activeCustomer == null) {
+        if (activeCustomer == null) // Add new customer
             activeCustomer = new Customer(++entryCounter);
-            data.add(activeCustomer);
-        }
+
+        /*
+         * Has something changed?
+         */
 
         boolean equal = true;
-
         String tmp = familyNameField.getText().trim();
+
         if (!tmp.equals(activeCustomer.getFamilyName())) {
             activeCustomer.setFamilyName(tmp);
             equal = false;
@@ -169,66 +161,101 @@ public class HeadSceneController {
             equal = false;
         }
 
-        // fix update issue
-        data.set(data.indexOf(activeCustomer), activeCustomer);
+        if (equal)
+            msg = "Nothing changed!";
+        else
+            msg = "Customer was saved successfully.";
+
+        /*
+         * Exists this entry in the table twice?
+         */
+        String simpleString = activeCustomer.toSimpleStringWithoutId();
+        for (Customer c : data)
+            if (activeCustomer != c && c.toSimpleStringWithoutId().equals(simpleString)) {
+                msg = "Customer already exists with id " + c.getId() + " in database!";
+                --entryCounter; // Return unused id
+                return false;
+            }
+
+        if (data.contains(activeCustomer))
+            // fix update issue
+            data.set(data.indexOf(activeCustomer), activeCustomer);
+        else
+            data.add(activeCustomer);
 
         return !equal;
     }
 
     public boolean checkFields() {
 
-        String tmp = familyNameField.getText().trim();
-        if (tmp.length() < 3 || !nameCheck(tmp)) {
-            msg = "Incorrect family name!";
-            return false;
-        }
+        header = "Error while checking text fields!";
+        msg = "";
 
-        tmp = streetField.getText().trim();
-        if (tmp.length() < 3 || !nameCheck(tmp)) {
-            msg = "Incorrect street name!";
-            return false;
-        }
+        msg += Check.name(familyNameField.getText(), "Family name");
+        msg += Check.name(streetField.getText(), "Street name");
+        msg += Check.name(cityField.getText(), "City name");
+        msg += Check.name(firstNameField.getText(), "First name");
+        msg += Check.houseNumber(houseNumberField.getText(), "House number");
+        msg += Check.zipCode(zipCodeField.getText(), "ZIP code");
 
-        tmp = cityField.getText().trim();
-        if (tmp.length() < 3 || !nameCheck(tmp)) {
-            msg = "Incorrect city name!";
-            return false;
-        }
-
-        tmp = firstNameField.getText().trim();
-        if (tmp.length() < 3 || !nameCheck(tmp)) {
-            msg = "Incorrect first name!";
-            return false;
-        }
-
-        tmp = houseNumberField.getText().trim();
-        if (!houseNummberCheck(tmp)) {
-            msg = "Incorrect house number!";
-            return false;
-        }
-
-        tmp = zipCodeField.getText().trim();
-        if (tmp.length() != 5 || !tmp.chars().allMatch(Character::isDigit)) {
-            msg = "Incorrect zip code!";
-            return false;
-        }
-
-        return true;
+        return msg.isEmpty();
     }
 
-    private boolean nameCheck(String tmp) {
-        if (Main.hardNameChecking) {
-            return Pattern.compile(nameCheckPatternUpperCaseLetterWordBeginning).matcher(tmp).find();
-        } else {
-            Matcher m = Pattern.compile(nameCheckPattern).matcher(tmp);
-            Matcher mm = Pattern.compile(nameCheckPatternAtLeastOneUpperCaseLetterWordBeginning).matcher(tmp);
-            return m.find() && mm.find();
-        }
-    }
+    public void loadData() {
+        File file = new File(Main.class.getResource("/resources/Customers.csv").getFile());
 
-    private boolean houseNummberCheck(String tmp) {
-        Matcher m = Pattern.compile(houseNumberCheckPattern).matcher(tmp);
-        return m.find();
+        try (Scanner scanner = new Scanner(file)) {
+            start: while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty() || line.startsWith("#") || line.startsWith("//"))
+                    continue start;
+                line = line.replace(',', ';');
+
+                try {
+                    String[] cells = line.split(";");
+                    if (cells.length >= 7) {
+                        int id;
+
+                        if ("".equals(cells[0]))
+                            id = ++entryCounter; // Set id (if not set)
+                        else {
+                            try {
+                                id = Integer.parseInt(cells[0]); // Parse id
+                            } catch (NumberFormatException e) {
+                                MyDialog.error("Error in customers input file: Malformed id value", "Line: " + line).show();
+                                continue start;
+                            }
+
+                            if (id <= 0) {
+                                MyDialog.error("Error in customers input file: Malformed id value", "Line: " + line).show();
+                                continue start;
+                            }
+
+                            entryCounter = entryCounter < id ? id : entryCounter; // Update entryCounter
+                            for (Customer c : data)
+                                if (c.getId() == id) {
+                                    MyDialog.error("Error in customers input file: Double id value", "Line: " + line).show();
+                                    continue start;
+                                }
+                        }
+
+                        activeCustomer = new Customer(id, cells[1].trim(), cells[2].trim(), cells[3].trim(), cells[4].trim(),
+                                                      cells[5].trim(), cells[6].trim());
+                        // At this point you could check the inputs and check for duplicates.
+                        data.add(activeCustomer);
+                    } else
+                        MyDialog.error("Error in customers input file: Too few columns", "Line: " + line).show(); // continue: start
+                } catch (Exception e) {
+                    MyDialog.error("Error in customers input file", "Line: " + line).show();
+                } finally {
+                    activeCustomer = null;
+                }
+            }
+            scanner.close(); // Scanner could theoretically remain open
+        } catch (IOException e) {}
+
+        // sorts the data
+        data.sort((o1, o2) -> o1.compareTo(o2));
     }
 
     /*
@@ -279,15 +306,19 @@ public class HeadSceneController {
     public void handleSave() {
         if (checkFields()) {
             if (saveCustomer()) {
-                MyDialog.info(null, "Customer was saved successfully.").showAndWait();
-            } else {
-                MyDialog.error(null, "Nothing changed!").showAndWait();
-            }
-            activeCustomer = null;
-            loadCustomer();
-            tabPane.getSelectionModel().select(tabList);
-        } else {
-            MyDialog.error(null, msg).showAndWait();
-        }
+                MyDialog.info(null, msg).showAndWait();
+                activeCustomer = null;
+                loadCustomer();
+                tabPane.getSelectionModel().select(tabList);
+            } else
+                MyDialog.error(null, msg).showAndWait();
+        } else
+            MyDialog.error(header, msg).showAndWait();
+    }
+
+    @FXML
+    public void handleEnterSave(KeyEvent e) {
+        if (e.getCode() == KeyCode.ENTER)
+            handleSave();
     }
 }
