@@ -15,11 +15,11 @@ public class Main extends Application {
     private static final double WEIDTH = 480.0D;
 
     /**
-     * Flag: Save button in details view/tab enabeld or not.
-     * <br><code>true</code> (default): Save button in details tab is always enabled (checks are executed after clicking save)
-     * <br><code>false</code>:          Save button is only enabled when checks are passed
+     * Flag: Save button in details view/tab enabled or not.
+     * <br><code>true</code> (default): Save button in details tab is always enabled (checks are executed after clicking save).
+     * <br><code>false</code>:          Save button is only enabled when checks are passed.
      */
-    public static boolean saveButtonEnabled = true; //
+    public static boolean saveButtonEnabled = true;
 
     /**
      * Flag about name checking in details tab.
@@ -27,6 +27,14 @@ public class Main extends Application {
      * <br><code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
      */
     public static boolean hardNameChecking = false;
+    
+    /**
+     * Flag enables some defects (if set to <code>true</code>).
+     * <li>Empty fields allowed.</li>
+     * <li>Multiply spaces/hyphen between words (name checks) will be ignored. Also allowed: "Ada -Helen"</li>
+     * <li>Double entries in database allowed.</li>
+     */
+    public static boolean enableDefects = false;
 
     public Main() {}
 
@@ -63,6 +71,10 @@ public class Main extends Application {
 
                 case "savebuttonenabled":
                     saveButtonEnabled = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
+                    break;
+                    
+                case "enabledefects":
+                    enableDefects = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
                     break;
             }
 

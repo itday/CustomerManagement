@@ -5,16 +5,53 @@ import java.util.regex.Pattern;
 
 public class Check {
 
-    private static final String nameCheckPattern                                       = "^[a-zA-ZÜÖÄüöäß]{3,19}((\\-|\\s)[A-ZÄÖÜa-zäöüß]{3,19}){0,3}$";
-    private static final String nameCheckPatternUpperCaseLetterWordBeginning           = "^[A-ZÄÖÜ][a-züöäß]{2,19}((\\-|\\s)[A-ZÄÖÜ][a-zäöüß]{2,19}){0,3}$";
+    /**
+     * Single,double,triple,quad words separated by a hyphen or a space are allowed.
+     * 3 >= words.length <= 20
+     * Included symbols: a-zA-ZÜÖÄüöäß
+     */
+    private static String nameCheckPattern = "^[a-zA-ZÜÖÄüöäß]{3,19}((\\-|\\s)[A-ZÄÖÜa-zäöüß]{3,19}){0,3}$";
+
+    static { // do something for the defects
+        if (Main.enableDefects) {
+            Matcher m = Pattern.compile("s\\)").matcher(nameCheckPattern);
+            nameCheckPattern = m.replaceFirst("s\\)\\+");
+
+            System.out.println("s\\)" + "  " + nameCheckPattern);
+        }
+    }
+
+    /**
+     * Single,double,triple,quad words separated by a hyphen or a space are allowed.
+     * All words have to start with a upper case letter.
+     * 3 >= words.length <= 20
+     * Included symbols: a-zA-ZÜÖÄüöäß
+     */
+    private static final String nameCheckPatternUpperCaseLetterWordBeginning = "^[A-ZÄÖÜ][a-züöäß]{2,19}((\\-|\\s)[A-ZÄÖÜ][a-zäöüß]{2,19}){0,3}$";
+
+    /**
+     * Checks if at least one word starts with a upper case letter.
+     * 3 >= words.length <= 20
+     * Included symbols: a-zA-ZÜÖÄüöäß
+     */
     private static final String nameCheckPatternAtLeastOneUpperCaseLetterWordBeginning = "[A-ZÄÖÜ][a-züöäß]{2,19}";
-    private static final String houseNumberCheckPattern                                = "^\\d{1,3}[a-z]?$";
+
+    /**
+     * Checks a house number.
+     * Valid: 1, 12, 123, 1a, 12a, 123a, ...
+     * Invalid: a, 1aa, 12aa, ...
+     * Pattern: digit{1-3}letter{0-1}
+     */
+    private static final String houseNumberCheckPattern = "^\\d{1,3}[a-z]?$";
 
     public static String name(String name, String prefix) {
         name = name.trim();
 
         if (name.length() == 0)
-            return prefix + " is empty!\n";
+            if (!Main.enableDefects)
+                return prefix + " is empty!\n";
+            else
+                return "";
 
         if (name.length() < 3)
             return prefix + " is to short!\n";
@@ -34,7 +71,10 @@ public class Check {
 
     public static String houseNumber(String houseNumber, String prefix) {
         if (houseNumber.length() == 0)
-            return prefix + " is empty!\n";
+            if (!Main.enableDefects)
+                return prefix + " is empty!\n";
+            else
+                return "";
 
         if (houseNumber.length() < 1)
             return prefix + " is to short!\n";
@@ -54,7 +94,10 @@ public class Check {
 
     public static String zipCode(String zipCode, String prefix) {
         if (zipCode.length() == 0)
-            return prefix + " is empty!\n";
+            if (!Main.enableDefects)
+                return prefix + " is empty!\n";
+            else
+                return "";
 
         if (zipCode.length() < 5)
             return prefix + " is to short!\n";

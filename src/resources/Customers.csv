@@ -1,10 +1,11 @@
 # Customers file
 #
 # Id, family name, first name, ZIP code, city, street, houseNumber
-;Mustermann;Max;12345;München;Putzbrunner;2a
-;Mustermann;Max;12345;München;Putzbrunner;2b
-;Mustermann;Max;12345;München;Putzbrunner;2c
-;Mustermann;Max;12345;München;Putzbrunner;2d
-;Mustermann;Max;12345;München;Putzbrunner;2e
+;Maier;Manuel;53498;Waldorf;Eulengasse;17
+;Müller;Max;90439;Nürnberg;Kollwitzstraße;2b
+;Wecker;Thorsten;86157;Augsburg;Zweibrückenstraße;115c
+;Bauer;Nicholas;12101;Berlin;Udetzeile;3
+;Wolf;Tim;81927;München;Jacobistraße;2e
+
 #
 # eof ..

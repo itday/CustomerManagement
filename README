@@ -2,27 +2,51 @@
 # Customer Management
 #
 
-Version: 1.3
+Version: 1.4
 Autor: Sebastian Müller
 
 #
 # Parameters
 declaration: --<NAME>=<VALUE>
 
+enableDefects:
+  by false (default): Empty fields allowed.
+                      Multiply spaces/hyphen between words (name checks) will be ignored. Also allowed: "Ada -Helen"
+                      Double entries in database allowed.
+
 saveButtonEnabled:
-  by true (default): Save button in details tab is always enabled (checks are executed after clicking save)
-  by false:          Save button is only enabled when checks are passed
+  by true (default): Save button in details tab is always enabled (checks are executed after clicking save).
+  by false:          Save button is only enabled when checks are passed.
   
 hardNameChecking:
   by true:            forbidden: "von Helen" allowed: "Von Helen"
   by false (default): forbidden: "von helen" allowed: "von Helen"
 
 #
+# Field checks
+
+Name checks (Family name, street, city, first name):
+  Single,double,triple,quad words separated by a hyphen or a space are allowed.
+  3 >= words.length <= 20
+  Included symbols: a-zA-ZÜÖÄüöäß
+  @see parameter: hardNameChecking
+  @see parameter: enableDefects (spaces)
+
+
+House number check:
+  Valid: 1, 12, 123, 1a, 12a, 123a, ...
+  Invalid: a, 1aa, 12aa, ...
+  Pattern: digit{1-3}letter{0-1}
+  
+ZIP code check:
+  Five digits are allowed (nothing else).
+
+#
 # Third party licenses 
 Icon made from Icon Fonts (http://www.onlinewebfonts.com/icon) is licensed by CC BY 3.0.
 
 #
-# Licence
+# License
 Creative Commons by 3.0
 
 #
