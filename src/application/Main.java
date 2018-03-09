@@ -82,7 +82,7 @@ public class Main extends Application {
     }
 
     public static void setIcon(Stage stage) {
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream("/application/img/CustomerManagerLogoTransparency.png")));
+        stage.getIcons().add(new Image(Main.class.getResourceAsStream("/application/img/CustomerManagerLogo.png")));
     }
 
     public static void main(String[] args) {

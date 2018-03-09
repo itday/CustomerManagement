@@ -1,7 +1,6 @@
 package application;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -202,9 +201,7 @@ public class HeadSceneController {
     }
 
     public void loadData() {
-        File file = new File(Main.class.getResource("/resources/Customers.csv").getFile());
-
-        try (Scanner scanner = new Scanner(file)) {
+        try (Scanner scanner = new Scanner(Main.class.getResourceAsStream("/resources/Customers.csv"), StandardCharsets.UTF_8.name())) {
             start: while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 if (line.isEmpty() || line.startsWith("#") || line.startsWith("//"))
@@ -252,7 +249,9 @@ public class HeadSceneController {
                 }
             }
             scanner.close(); // Scanner could theoretically remain open
-        } catch (IOException e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // sorts the data
         data.sort((o1, o2) -> o1.compareTo(o2));
