@@ -16,8 +16,6 @@ public class Check {
         if (Main.enableDefects) {
             Matcher m = Pattern.compile("s\\)").matcher(nameCheckPattern);
             nameCheckPattern = m.replaceFirst("s\\)\\+");
-
-            System.out.println("s\\)" + "  " + nameCheckPattern);
         }
     }
 

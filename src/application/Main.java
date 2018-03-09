@@ -27,7 +27,7 @@ public class Main extends Application {
      * <br><code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
      */
     public static boolean hardNameChecking = false;
-    
+
     /**
      * Flag enables some defects (if set to <code>true</code>).
      * <li>Empty fields allowed.</li>
@@ -72,7 +72,7 @@ public class Main extends Application {
                 case "savebuttonenabled":
                     saveButtonEnabled = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
                     break;
-                    
+
                 case "enabledefects":
                     enableDefects = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
                     break;

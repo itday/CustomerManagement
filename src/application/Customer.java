@@ -11,9 +11,7 @@ public class Customer implements Comparable<Customer> {
     private SimpleStringProperty                        street      = new SimpleStringProperty("");
     private SimpleStringProperty                        houseNumber = new SimpleStringProperty("");
 
-    public Customer(int id) {
-        this.id.set(id);
-    }
+    public Customer() {}
 
     public Customer(int id, String familyName, String firstName, String zipCode, String city, String street, String houseNumber) {
         this.id.set(id);

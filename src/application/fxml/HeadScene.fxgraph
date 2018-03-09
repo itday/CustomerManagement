@@ -213,7 +213,7 @@ component Sample controlledby application.HeadSceneController {
 												onKeyReleased : controllermethod handleEnterSave
 											},
 											TextField id zipCodeField {
-												promptText : "85521",
+												promptText : "80331",
 												static rowIndex : 2,
 												static columnIndex : 4,
 												onKeyReleased : controllermethod handleEnterSave

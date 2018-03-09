@@ -121,7 +121,7 @@ public class HeadSceneController {
 
     public boolean saveCustomer() {
         if (activeCustomer == null) // Add new customer
-            activeCustomer = new Customer(++entryCounter);
+            activeCustomer = new Customer(); // without Id
 
         /*
          * Has something changed?
@@ -160,29 +160,37 @@ public class HeadSceneController {
             equal = false;
         }
 
-        if (equal)
+        if (equal) {
             msg = "Nothing changed!";
-        else
-            msg = "Customer was saved successfully.";
+            return false;
+        }      
 
         /*
          * Exists this entry in the table twice?
          */
-        String simpleString = activeCustomer.toSimpleStringWithoutId();
-        for (Customer c : data)
-            if (activeCustomer != c && c.toSimpleStringWithoutId().equals(simpleString)) {
-                msg = "Customer already exists with id " + c.getId() + " in database!";
-                --entryCounter; // Return unused id
-                return false;
-            }
+        if (!Main.enableDefects) {
+            String simpleString = activeCustomer.toSimpleStringWithoutId();
+            for (Customer c : data)
+                if (activeCustomer != c && c.toSimpleStringWithoutId().equals(simpleString)) {
+                    msg = "Customer already exists with id " + c.getId() + " in database!";
+                    return false;
+                }
+        }
+        
+        /*
+         * Update tableView
+         */
 
         if (data.contains(activeCustomer))
             // fix update issue
             data.set(data.indexOf(activeCustomer), activeCustomer);
-        else
+        else {
+            activeCustomer.setId(++entryCounter);
             data.add(activeCustomer);
+        }
 
-        return !equal;
+        msg = "Customer was saved successfully.";
+        return true; // !equal
     }
 
     public boolean checkFields() {

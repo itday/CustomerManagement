@@ -130,7 +130,7 @@
 												</Label>
 												<TextField fx:id="firstNameField" promptText="Max" onKeyReleased="#handleEnterSave" GridPane.rowIndex="0" GridPane.columnIndex="4"/> 
 												<TextField fx:id="houseNumberField" promptText="2b" onKeyReleased="#handleEnterSave" GridPane.rowIndex="1" GridPane.columnIndex="4"/> 
-												<TextField fx:id="zipCodeField" promptText="85521" onKeyReleased="#handleEnterSave" GridPane.rowIndex="2" GridPane.columnIndex="4"/> 
+												<TextField fx:id="zipCodeField" promptText="80331" onKeyReleased="#handleEnterSave" GridPane.rowIndex="2" GridPane.columnIndex="4"/> 
 											</children>
 										</GridPane>
 									</center>
