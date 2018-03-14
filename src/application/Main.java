@@ -1,91 +1,72 @@
 package application;
 
-import java.util.Map.Entry;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+public class Main {
+    private JFrame jFrame;
 
-public class Main extends Application {
-    private static final double HEIGHT = 700.0D;
-    private static final double WEIDTH = 480.0D;
+    private static final int HEIGHT = 700;
+    private static final int WEIDTH = 480;
 
     /**
      * Flag: Save button in details view/tab enabled or not.
-     * <br><code>true</code> (default): Save button in details tab is always enabled (checks are executed after clicking save).
-     * <br><code>false</code>:          Save button is only enabled when checks are passed.
+     * <br>
+     * <code>true</code> (default): Save button in details tab is always enabled
+     * (checks are executed after clicking save).
+     * <br>
+     * <code>false</code>: Save button is only enabled when checks are passed.
      */
     public static boolean saveButtonEnabled = true;
 
     /**
      * Flag about name checking in details tab.
-     * <br><code>true</code>             forbidden: "von Helen" allowed: "Von Helen"
-     * <br><code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
+     * <br>
+     * <code>true</code> forbidden: "von Helen" allowed: "Von Helen"
+     * <br>
+     * <code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
      */
     public static boolean hardNameChecking = false;
 
     /**
      * Flag enables some defects (if set to <code>true</code>).
      * <li>Empty fields allowed.</li>
-     * <li>Multiply spaces/hyphen between words (name checks) will be ignored. Also allowed: "Ada -Helen"</li>
+     * <li>Multiply spaces/hyphen between words (name checks) will be ignored.
+     * Also allowed: "Ada -Helen"</li>
      * <li>Double entries in database allowed.</li>
      */
     public static boolean enableDefects = false;
 
-    public Main() {}
-
-    public void start(Stage primaryStage) {
+    public Main(String[] args) {
         setParameters();
 
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/application/fxml/HeadScene.fxml"));
-
-            VBox root = (VBox) loader.load();
-            Scene scene = new Scene(root, HEIGHT, WEIDTH);
-            scene.getStylesheets().add(Main.class.getResource("/application/css/headScene.css").toExternalForm());
-            setUserAgentStylesheet(Application.STYLESHEET_MODENA);
-            ((HeadSceneController) loader.getController()).draw(scene);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Customer Management");
-            primaryStage.setResizable(false);
-            setIcon(primaryStage);
-
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            primaryStage.close();
-            Platform.exit();
-        }
+        jFrame = new JFrame("Customer Management");
+        jFrame.setSize(HEIGHT, WEIDTH);
+        jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIcon(jFrame);
+        HeadSceneController controller = new HeadSceneController();
+        controller.initialize(jFrame);
     }
 
     private void setParameters() {
-        for (Entry<String, String> e : getParameters().getNamed().entrySet()) {
-            switch (e.getKey().toLowerCase()) {
-                case "hardnamechecking":
-                    hardNameChecking = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
-                    break;
+        // Man könnte auch direkt auf die Parameter zugreifen, da das aber ein
+        // Port ist, wurde das vermieden
+        saveButtonEnabled = Boolean.parseBoolean(System.getProperty("saveButtonEnabled", "true"));
+        hardNameChecking = Boolean.parseBoolean(System.getProperty("hardNameChecking", "false"));
+        enableDefects = Boolean.parseBoolean(System.getProperty("enableDefects", "false"));
+    }
 
-                case "savebuttonenabled":
-                    saveButtonEnabled = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
-                    break;
-
-                case "enabledefects":
-                    enableDefects = Boolean.parseBoolean(e.getValue().toLowerCase().trim());
-                    break;
-            }
-
+    public static void setIcon(JFrame frame) {
+        try {
+            frame.setIconImage(ImageIO.read(Main.class.getResourceAsStream("/application/img/CustomerManagerLogo.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void setIcon(Stage stage) {
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream("/application/img/CustomerManagerLogo.png")));
-    }
-
     public static void main(String[] args) {
-        launch(args);
+        new Main(args);
     }
 }

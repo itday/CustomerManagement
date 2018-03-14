@@ -1,82 +1,86 @@
 package application;
 
-import javafx.beans.property.SimpleStringProperty;
+import java.util.Arrays;
+import java.util.Vector;
 
 public class Customer implements Comparable<Customer> {
-    private javafx.beans.property.SimpleIntegerProperty id          = new javafx.beans.property.SimpleIntegerProperty();
-    private SimpleStringProperty                        familyName  = new SimpleStringProperty("");
-    private SimpleStringProperty                        firstName   = new SimpleStringProperty("");
-    private SimpleStringProperty                        zipCode     = new SimpleStringProperty("");
-    private SimpleStringProperty                        city        = new SimpleStringProperty("");
-    private SimpleStringProperty                        street      = new SimpleStringProperty("");
-    private SimpleStringProperty                        houseNumber = new SimpleStringProperty("");
 
-    public Customer() {}
+    private Vector<String> vector;
 
-    public Customer(int id, String familyName, String firstName, String zipCode, String city, String street, String houseNumber) {
-        this.id.set(id);
-        this.familyName.set(familyName);
-        this.firstName.set(firstName);
-        this.zipCode.set(zipCode);
-        this.city.set(city);
-        this.street.set(street);
-        this.houseNumber.set(houseNumber);
+    public Customer() {
+        vector = new Vector<>(7);
+        vector.addAll(Arrays.asList("-1", "", "", "", "", "", "")); // Fix
     }
 
-    public int getId() {
-        return id.get();
+    public Customer(int id, String familyName, String firstName, String zipCode, String city, String street, String houseNumber) {
+        this();
+        vector.add(0, "" + id); // 0
+        vector.add(1, familyName); // 1
+        vector.add(2, firstName); // 2
+        vector.add(3, zipCode); // 3
+        vector.add(4, city); // 4
+        vector.add(5, street); // 5
+        vector.add(6, houseNumber); // 6
+    }
+
+    public Vector<String> getVector() {
+        return vector;
+    }
+
+    public int getId() { // 0
+        return Integer.parseInt(vector.get(0));
     }
 
     public void setId(int id) {
-        this.id.set(id);
+        vector.set(0, "" + id);
     }
 
-    public String getFamilyName() {
-        return familyName.get();
+    public String getFamilyName() { // 1
+        return vector.get(1);
     }
 
     public void setFamilyName(String familyName) {
-        this.familyName.set(familyName);
+        vector.set(1, familyName);
     }
 
-    public String getFirstName() {
-        return firstName.get();
+    public String getFirstName() { // 2
+        return vector.get(2);
     }
 
     public void setFirstName(String firstName) {
-        this.firstName.set(firstName);
+        vector.set(2, firstName);
     }
 
-    public String getZipCode() {
-        return zipCode.get();
+    public String getZipCode() { // 3
+        return vector.get(3);
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode.set(zipCode);
+        vector.set(3, zipCode);
     }
 
-    public String getCity() {
-        return city.get();
+    public String getCity() { // 4
+        return vector.get(4);
     }
 
     public void setCity(String city) {
-        this.city.set(city);
+        vector.set(4, city);
     }
 
-    public String getStreet() {
-        return street.get();
+    public String getStreet() { // 5
+        return vector.get(5);
     }
 
     public void setStreet(String street) {
-        this.street.set(street);
+        vector.set(5, street);
     }
 
-    public String getHouseNumber() {
-        return houseNumber.get();
+    public String getHouseNumber() { // 6
+        return vector.get(6);
     }
 
     public void setHouseNumber(String houseNumber) {
-        this.houseNumber.set(houseNumber);
+        vector.set(6, houseNumber);
     }
 
     @Override
@@ -91,11 +95,11 @@ public class Customer implements Comparable<Customer> {
 
     @Override
     public String toString() {
-        return "Customer [id: " + id.get() + ", familyName: " + familyName.get() + ", firstName: " + firstName.get() + ", zipCode: "
-            + zipCode.get() + ", city: " + city.get() + ", street: " + street.get() + ", houseNumber: " + houseNumber.get() + "]";
+        return "Customer [id: " + getId() + ", familyName: " + getFamilyName() + ", firstName: " + getFirstName() + ", zipCode: "
+            + getZipCode() + ", city: " + getCity() + ", street: " + getStreet() + ", houseNumber: " + getHouseNumber() + "]";
     }
 
     public String toSimpleStringWithoutId() {
-        return familyName.get() + firstName.get() + zipCode.get() + city.get() + street.get() + houseNumber.get();
+        return getFamilyName() + getFirstName() + getZipCode() + getCity() + getStreet() + getHouseNumber();
     }
 }

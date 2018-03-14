@@ -1,56 +1,40 @@
 package application;
 
+import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Scanner;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+
+import application.objects.MyJTable;
 
 public class HeadSceneController {
-
-    @FXML TabPane tabPane;
-    @FXML Tab     tabList;
-    @FXML Tab     tabDetail;
+    private JTabbedPane jTabbedPane;
 
     /*
-     * tabList
+     * listTab
      */
-
-    @FXML TableView<Customer>            tableView;
-    private ObservableList<Customer>     data;
-    @FXML TableColumn<Customer, Integer> idTableColumn;
-    @FXML TableColumn<Customer, String>  houseNumberTableColumn;
-
-    private int entryCounter = 0;
+    private Component listTab;
+    private MyJTable  jTable;
 
     /*
      * detailsTab
      */
+    private Component    detailsTab;
+    private JTextField[] fields;
 
-    private Customer activeCustomer;
-
-    @FXML Pane       detailsPane;
-    @FXML BorderPane detailsBorderPane;
-
-    @FXML TextField familyNameField;
-    @FXML TextField streetField;
-    @FXML TextField cityField;
-    @FXML TextField firstNameField;
-    @FXML TextField houseNumberField;
-    @FXML TextField zipCodeField;
-
-    @FXML Button saveDetails;
+    /*
+     * data
+     */
+    private ArrayList<Customer> customers;
+    private int                 entryCounter = 0;
+    private Customer            activeCustomer;
 
     // Message string for errors
     private String header;
@@ -60,39 +44,32 @@ public class HeadSceneController {
      * GUI actions
      */
 
-    public void initialize() {
-        data = tableView.getItems();
+    public void initialize(JFrame jFrame) {
+        customers = new ArrayList<>();
 
-        // load data
+        /*
+         * Build gui
+         */
+        jTabbedPane = new JTabbedPane();
+        jFrame.add(jTabbedPane);
+
+        ListTab iLT = new ListTab(this); // input list tab
+        listTab = iLT.draw();
+        jTable = iLT.getJTable();
+
+        DetailsTab iDT = new DetailsTab(this); // input details tab
+        detailsTab = iDT.draw();
+        fields = iDT.getFields();
+
+        jTabbedPane.add("All Customers", listTab);
+        jTabbedPane.add("Customer Details", detailsTab);
+
+        /*
+         * Prepare data
+         */
         loadData();
-
-        // tableView resizing
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        idTableColumn.setMaxWidth(30.0);
-        idTableColumn.setMinWidth(30.0);
-        houseNumberTableColumn.setMaxWidth(110.0);
-        houseNumberTableColumn.setMinWidth(110.0);
-
-        // Enable saveDetails button
-        if (Main.saveButtonEnabled) {
-            saveDetails.setDisable(false);
-        } else {
-            ChangeListener<String> listener = (a, b, c) -> {
-                saveDetails.setDisable(!checkFields());
-            };
-            familyNameField.textProperty().addListener(listener);
-            streetField.textProperty().addListener(listener);
-            cityField.textProperty().addListener(listener);
-            firstNameField.textProperty().addListener(listener);
-            houseNumberField.textProperty().addListener(listener);
-            zipCodeField.textProperty().addListener(listener);
-        }
-
-    }
-
-    public void draw(Scene scene) {
-        detailsPane.setMaxHeight(scene.getHeight());
-        detailsBorderPane.setMaxWidth(scene.getWidth());
+        jFrame.setVisible(true);
+        jTable.init(jFrame.getGraphics().getFontMetrics());
     }
 
     /*
@@ -101,21 +78,21 @@ public class HeadSceneController {
 
     public void loadCustomer() {
         if (activeCustomer == null) {
-            familyNameField.requestFocus();
-            familyNameField.setText("");
-            streetField.setText("");
-            cityField.setText("");
-            firstNameField.setText("");
-            houseNumberField.setText("");
-            zipCodeField.setText("");
+            fields[0].requestFocus();
+            fields[0].setText("");
+            fields[1].setText("");
+            fields[2].setText("");
+            fields[3].setText("");
+            fields[4].setText("");
+            fields[5].setText("");
         } else {
-            familyNameField.requestFocus();
-            familyNameField.setText(activeCustomer.getFamilyName());
-            streetField.setText(activeCustomer.getStreet());
-            cityField.setText(activeCustomer.getCity());
-            firstNameField.setText(activeCustomer.getFirstName());
-            houseNumberField.setText(activeCustomer.getHouseNumber());
-            zipCodeField.setText(activeCustomer.getZipCode());
+            fields[0].requestFocus();
+            fields[0].setText(activeCustomer.getFamilyName());
+            fields[1].setText(activeCustomer.getStreet());
+            fields[2].setText(activeCustomer.getCity());
+            fields[3].setText(activeCustomer.getFirstName());
+            fields[4].setText(activeCustomer.getHouseNumber());
+            fields[5].setText(activeCustomer.getZipCode());
         }
     }
 
@@ -128,34 +105,34 @@ public class HeadSceneController {
          */
 
         boolean equal = true;
-        String tmp = familyNameField.getText().trim();
+        String tmp = fields[0].getText().trim();
 
         if (!tmp.equals(activeCustomer.getFamilyName())) {
             activeCustomer.setFamilyName(tmp);
             equal = false;
         }
 
-        if (!(tmp = streetField.getText().trim()).equals(activeCustomer.getStreet())) {
+        if (!(tmp = fields[1].getText().trim()).equals(activeCustomer.getStreet())) {
             activeCustomer.setStreet(tmp);
             equal = false;
         }
 
-        if (!(tmp = cityField.getText().trim()).equals(activeCustomer.getCity())) {
+        if (!(tmp = fields[2].getText().trim()).equals(activeCustomer.getCity())) {
             activeCustomer.setCity(tmp);
             equal = false;
         }
 
-        if (!(tmp = firstNameField.getText().trim()).equals(activeCustomer.getFirstName())) {
+        if (!(tmp = fields[3].getText().trim()).equals(activeCustomer.getFirstName())) {
             activeCustomer.setFirstName(tmp);
             equal = false;
         }
 
-        if (!(tmp = houseNumberField.getText().trim()).equals(activeCustomer.getHouseNumber())) {
+        if (!(tmp = fields[4].getText().trim()).equals(activeCustomer.getHouseNumber())) {
             activeCustomer.setHouseNumber(tmp);
             equal = false;
         }
 
-        if (!(tmp = zipCodeField.getText().trim()).equals(activeCustomer.getZipCode())) {
+        if (!(tmp = fields[5].getText().trim()).equals(activeCustomer.getZipCode())) {
             activeCustomer.setZipCode(tmp);
             equal = false;
         }
@@ -163,31 +140,30 @@ public class HeadSceneController {
         if (equal) {
             msg = "Nothing changed!";
             return false;
-        }      
+        }
 
         /*
          * Exists this entry in the table twice?
          */
         if (!Main.enableDefects) {
             String simpleString = activeCustomer.toSimpleStringWithoutId();
-            for (Customer c : data)
+            for (Customer c : customers)
                 if (activeCustomer != c && c.toSimpleStringWithoutId().equals(simpleString)) {
                     msg = "Customer already exists with id " + c.getId() + " in database!";
                     return false;
                 }
         }
-        
+
         /*
          * Update tableView
          */
 
-        if (data.contains(activeCustomer))
-            // fix update issue
-            data.set(data.indexOf(activeCustomer), activeCustomer);
-        else {
+        if (!customers.contains(activeCustomer)) {
             activeCustomer.setId(++entryCounter);
-            data.add(activeCustomer);
+            customers.add(activeCustomer);
         }
+        jTable.getModel().refresh();
+        jTable.updateSize();
 
         msg = "Customer was saved successfully.";
         return true; // !equal
@@ -198,12 +174,12 @@ public class HeadSceneController {
         header = "Error while checking text fields!";
         msg = "";
 
-        msg += Check.name(familyNameField.getText(), "Family name");
-        msg += Check.name(streetField.getText(), "Street name");
-        msg += Check.name(cityField.getText(), "City name");
-        msg += Check.name(firstNameField.getText(), "First name");
-        msg += Check.houseNumber(houseNumberField.getText(), "House number");
-        msg += Check.zipCode(zipCodeField.getText(), "ZIP code");
+        msg += Check.name(fields[0].getText(), "Family name");
+        msg += Check.name(fields[1].getText(), "Street name");
+        msg += Check.name(fields[2].getText(), "City name");
+        msg += Check.name(fields[3].getText(), "First name");
+        msg += Check.houseNumber(fields[4].getText(), "House number");
+        msg += Check.zipCode(fields[5].getText(), "ZIP code");
 
         return msg.isEmpty();
     }
@@ -227,31 +203,35 @@ public class HeadSceneController {
                             try {
                                 id = Integer.parseInt(cells[0]); // Parse id
                             } catch (NumberFormatException e) {
-                                MyDialog.error("Error in customers input file: Malformed id value", "Line: " + line).show();
+                                MyDialog.error("Error in customers input file: Malformed id value", "Line: " + line);
                                 continue start;
                             }
 
                             if (id <= 0) {
-                                MyDialog.error("Error in customers input file: Malformed id value", "Line: " + line).show();
+                                MyDialog.error("Error in customers input file: Malformed id value", "Line: " + line);
                                 continue start;
                             }
 
-                            entryCounter = entryCounter < id ? id : entryCounter; // Update entryCounter
-                            for (Customer c : data)
+                            entryCounter = entryCounter < id ? id : entryCounter; // Update
+                                                                                  // entryCounter
+                            for (Customer c : customers)
                                 if (c.getId() == id) {
-                                    MyDialog.error("Error in customers input file: Double id value", "Line: " + line).show();
+                                    MyDialog.error("Error in customers input file: Double id value", "Line: " + line);
                                     continue start;
                                 }
                         }
 
                         activeCustomer = new Customer(id, cells[1].trim(), cells[2].trim(), cells[3].trim(), cells[4].trim(),
                                                       cells[5].trim(), cells[6].trim());
-                        // At this point you could check the inputs and check for duplicates.
-                        data.add(activeCustomer);
+                        // At this point you could check the inputs and check
+                        // for duplicates.
+                        customers.add(activeCustomer);
                     } else
-                        MyDialog.error("Error in customers input file: Too few columns", "Line: " + line).show(); // continue: start
+                        MyDialog.error("Error in customers input file: Too few columns", "Line: " + line); // continue:
+                                                                                                           // start
                 } catch (Exception e) {
-                    MyDialog.error("Error in customers input file", "Line: " + line).show();
+                    e.printStackTrace();
+                    MyDialog.error("Error in customers input file", "Line: " + line);
                 } finally {
                     activeCustomer = null;
                 }
@@ -262,70 +242,102 @@ public class HeadSceneController {
         }
 
         // sorts the data
-        data.sort((o1, o2) -> o1.compareTo(o2));
+        customers.sort((o1, o2) -> o1.compareTo(o2));
+
+        // refresh
+        jTable.getModel().refresh();
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
     }
 
     /*
-     * FXML handler for actions
+     * Handler for actions
      */
 
-    @FXML
-    public void handleAdd() {
-        activeCustomer = null;
-        tabPane.getSelectionModel().select(tabDetail);
-        loadCustomer();
-    }
-
-    @FXML
-    public void handleModify() {
-        activeCustomer = (Customer) tableView.getSelectionModel().getSelectedItem();
-        if (activeCustomer == null) {
-            MyDialog.error(null, "No line selected!").showAndWait();
-        } else {
-            tabPane.getSelectionModel().select(tabDetail);
+    public ActionListener getHandleAdd() {
+        return (e) -> {
+            activeCustomer = null;
+            jTabbedPane.setSelectedComponent(detailsTab);
             loadCustomer();
-        }
+        };
     }
 
-    @FXML
-    public void handleDelete() {
-        activeCustomer = (Customer) tableView.getSelectionModel().getSelectedItem();
-        if (activeCustomer == null) {
-            MyDialog.error(null, "No line selected!").showAndWait();
-        } else {
-            data.remove((Object) activeCustomer);
-        }
+    public ActionListener getHandleModify() {
+        return (e) -> {
+            activeCustomer = jTable.getModel().getCustomer(jTable.getSelectedRow());
+            if (activeCustomer == null) {
+                MyDialog.error(null, "No line selected!");
+            } else {
+                jTabbedPane.setSelectedComponent(detailsTab);
+                loadCustomer();
+            }
+        };
     }
 
-    @FXML
-    public void handleCancle() {
-        tabPane.getSelectionModel().select(tabList);
-        activeCustomer = null;
-        loadCustomer();
+    public ActionListener getHandleDelete() {
+        return (e) -> {
+            activeCustomer = jTable.getModel().getCustomer(jTable.getSelectedRow());
+            if (activeCustomer == null) {
+                MyDialog.error(null, "No line selected!");
+            } else {
+                customers.remove(activeCustomer);
+                activeCustomer = null; // Fix
+                loadCustomer();
+                jTable.getModel().refresh();
+            }
+        };
     }
 
-    @FXML
-    public void handleReset() {
-        loadCustomer();
+    public ActionListener getHandleCancle() {
+        return (e) -> {
+            jTabbedPane.setSelectedComponent(listTab);
+            activeCustomer = null;
+            loadCustomer();
+        };
     }
 
-    @FXML
+    public ActionListener getHandleReset() {
+        return (e) -> {
+            loadCustomer();
+        };
+    }
+
+    public ActionListener getHandleSave() {
+        return (e) -> {
+            handleSave();
+        };
+    }
+
     public void handleSave() {
         if (checkFields()) {
             if (saveCustomer()) {
-                MyDialog.info(null, msg).showAndWait();
+                MyDialog.info(null, msg);
                 activeCustomer = null;
                 loadCustomer();
-                tabPane.getSelectionModel().select(tabList);
+                jTable.getModel().refresh();
+                jTabbedPane.setSelectedComponent(listTab);
             } else
-                MyDialog.error(null, msg).showAndWait();
+                MyDialog.error(null, msg);
         } else
-            MyDialog.error(header, msg).showAndWait();
+            MyDialog.error(header, msg);
     }
 
-    @FXML
-    public void handleEnterSave(KeyEvent e) {
-        if (e.getCode() == KeyCode.ENTER)
-            handleSave();
+    public KeyListener getHandleEnterSave() {
+        return new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    handleSave();
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {}
+        };
     }
 }

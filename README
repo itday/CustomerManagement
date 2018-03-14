@@ -2,12 +2,12 @@
 # Customer Management
 #
 
-Version: 1.4
+Version: 1.5
 Autor: Sebastian Müller
 
 #
 # Parameters
-declaration: --<NAME>=<VALUE>
+declaration: -D<NAME>=<VALUE>
 
 enableDefects:
   by false (default): Empty fields allowed.
@@ -40,6 +40,11 @@ House number check:
   
 ZIP code check:
   Five digits are allowed (nothing else).
+
+#
+# JGoodies librarys needed (for start from source)
+jgoodies-common-1.8.0.jar
+jgoodies-forms-1.8.0.jar
 
 #
 # Third party licenses 
