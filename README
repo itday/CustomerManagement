@@ -24,7 +24,6 @@ hardNameChecking:
 
 #
 # Field checks
-
 Name checks (Family name, street, city, first name):
   Single,double,triple,quad words separated by a hyphen or a space are allowed.
   3 >= words.length <= 20
