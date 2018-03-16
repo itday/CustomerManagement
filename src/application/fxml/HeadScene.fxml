@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="application.HeadSceneController">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="application.Controller">
 
 	<children>
 		<TabPane fx:id="tabPane"> 

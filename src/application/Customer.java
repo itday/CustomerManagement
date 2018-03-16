@@ -1,15 +1,23 @@
 package application;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
+/**
+ * Data class for customers
+ *
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
 
 public class Customer implements Comparable<Customer> {
-    private javafx.beans.property.SimpleIntegerProperty id          = new javafx.beans.property.SimpleIntegerProperty();
-    private SimpleStringProperty                        familyName  = new SimpleStringProperty("");
-    private SimpleStringProperty                        firstName   = new SimpleStringProperty("");
-    private SimpleStringProperty                        zipCode     = new SimpleStringProperty("");
-    private SimpleStringProperty                        city        = new SimpleStringProperty("");
-    private SimpleStringProperty                        street      = new SimpleStringProperty("");
-    private SimpleStringProperty                        houseNumber = new SimpleStringProperty("");
+    private SimpleIntegerProperty id          = new SimpleIntegerProperty();
+    private SimpleStringProperty  familyName  = new SimpleStringProperty("");
+    private SimpleStringProperty  firstName   = new SimpleStringProperty("");
+    private SimpleStringProperty  zipCode     = new SimpleStringProperty("");
+    private SimpleStringProperty  city        = new SimpleStringProperty("");
+    private SimpleStringProperty  street      = new SimpleStringProperty("");
+    private SimpleStringProperty  houseNumber = new SimpleStringProperty("");
 
     public Customer() {}
 
@@ -94,6 +102,12 @@ public class Customer implements Comparable<Customer> {
         return "Customer [id: " + id.get() + ", familyName: " + familyName.get() + ", firstName: " + firstName.get() + ", zipCode: "
             + zipCode.get() + ", city: " + city.get() + ", street: " + street.get() + ", houseNumber: " + houseNumber.get() + "]";
     }
+
+    /**
+     * toString for checks without variable id.
+     * 
+     * @return String for checking
+     */
 
     public String toSimpleStringWithoutId() {
         return familyName.get() + firstName.get() + zipCode.get() + city.get() + street.get() + houseNumber.get();

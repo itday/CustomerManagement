@@ -6,6 +6,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Dialog class
+ * 
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
+
 public class MyDialog {
 
     public synchronized static Alert info(String header, String content) {

@@ -10,28 +10,43 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Loads the FXML and CSS file. Sets some defaults settings. Loads the
+ * parameters and set the icon.
+ * 
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
+
 public class Main extends Application {
-    private static final double HEIGHT = 700.0D;
-    private static final double WEIDTH = 480.0D;
+    private static final double WEIDTH = 700;
+    private static final double HEIGHT = 480;
 
     /**
      * Flag: Save button in details view/tab enabled or not.
-     * <br><code>true</code> (default): Save button in details tab is always enabled (checks are executed after clicking save).
-     * <br><code>false</code>:          Save button is only enabled when checks are passed.
+     * <br>
+     * <code>true</code> (default): Save button in details tab is always enabled
+     * (checks are executed after clicking save).
+     * <br>
+     * <code>false</code>: Save button is only enabled when checks are passed.
      */
     public static boolean saveButtonEnabled = true;
 
     /**
      * Flag about name checking in details tab.
-     * <br><code>true</code>             forbidden: "von Helen" allowed: "Von Helen"
-     * <br><code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
+     * <br>
+     * <code>true</code> forbidden: "von Helen" allowed: "Von Helen"
+     * <br>
+     * <code>false</code> (default): forbidden: "von helen" allowed: "von Helen"
      */
     public static boolean hardNameChecking = false;
 
     /**
      * Flag enables some defects (if set to <code>true</code>).
      * <li>Empty fields allowed.</li>
-     * <li>Multiply spaces/hyphen between words (name checks) will be ignored. Also allowed: "Ada -Helen"</li>
+     * <li>Multiply spaces/hyphen between words (name and street checks) will be
+     * ignored.
+     * Also allowed: "Ada -Helen"</li>
      * <li>Double entries in database allowed.</li>
      */
     public static boolean enableDefects = false;
@@ -45,10 +60,10 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/application/fxml/HeadScene.fxml"));
 
             VBox root = (VBox) loader.load();
-            Scene scene = new Scene(root, HEIGHT, WEIDTH);
+            Scene scene = new Scene(root, WEIDTH, HEIGHT);
             scene.getStylesheets().add(Main.class.getResource("/application/css/headScene.css").toExternalForm());
             setUserAgentStylesheet(Application.STYLESHEET_MODENA);
-            ((HeadSceneController) loader.getController()).draw(scene);
+            ((Controller) loader.getController()).draw(scene);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Customer Management");
             primaryStage.setResizable(false);

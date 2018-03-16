@@ -17,20 +17,27 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
-public class HeadSceneController {
+/**
+ * Controller for FXMl file.
+ *
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
 
-    @FXML TabPane tabPane;
-    @FXML Tab     tabList;
-    @FXML Tab     tabDetail;
+public class Controller {
+
+    @FXML private TabPane tabPane;
+    @FXML private Tab     tabList;
+    @FXML private Tab     tabDetail;
 
     /*
      * tabList
      */
 
-    @FXML TableView<Customer>            tableView;
-    private ObservableList<Customer>     data;
-    @FXML TableColumn<Customer, Integer> idTableColumn;
-    @FXML TableColumn<Customer, String>  houseNumberTableColumn;
+    @FXML private TableView<Customer>            tableView;
+    private ObservableList<Customer>             data;
+    @FXML private TableColumn<Customer, Integer> idTableColumn;
+    @FXML private TableColumn<Customer, String>  houseNumberTableColumn;
 
     private int entryCounter = 0;
 
@@ -40,17 +47,17 @@ public class HeadSceneController {
 
     private Customer activeCustomer;
 
-    @FXML Pane       detailsPane;
-    @FXML BorderPane detailsBorderPane;
+    @FXML private Pane       detailsPane;
+    @FXML private BorderPane detailsBorderPane;
 
-    @FXML TextField familyNameField;
-    @FXML TextField streetField;
-    @FXML TextField cityField;
-    @FXML TextField firstNameField;
-    @FXML TextField houseNumberField;
-    @FXML TextField zipCodeField;
+    @FXML private TextField familyNameField;
+    @FXML private TextField streetField;
+    @FXML private TextField cityField;
+    @FXML private TextField firstNameField;
+    @FXML private TextField houseNumberField;
+    @FXML private TextField zipCodeField;
 
-    @FXML Button saveDetails;
+    @FXML private Button saveDetails;
 
     // Message string for errors
     private String header;
@@ -63,10 +70,10 @@ public class HeadSceneController {
     public void initialize() {
         data = tableView.getItems();
 
-        // load data
+        // Load data
         loadData();
 
-        // tableView resizing
+        // tableView resizing (could  be better)
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         idTableColumn.setMaxWidth(30.0);
         idTableColumn.setMinWidth(30.0);
@@ -99,9 +106,9 @@ public class HeadSceneController {
      * Customer actions
      */
 
-    public void loadCustomer() {
+    private void loadCustomer() {
+        familyNameField.requestFocus();
         if (activeCustomer == null) {
-            familyNameField.requestFocus();
             familyNameField.setText("");
             streetField.setText("");
             cityField.setText("");
@@ -109,7 +116,6 @@ public class HeadSceneController {
             houseNumberField.setText("");
             zipCodeField.setText("");
         } else {
-            familyNameField.requestFocus();
             familyNameField.setText(activeCustomer.getFamilyName());
             streetField.setText(activeCustomer.getStreet());
             cityField.setText(activeCustomer.getCity());
@@ -121,7 +127,7 @@ public class HeadSceneController {
 
     public boolean saveCustomer() {
         if (activeCustomer == null) // Add new customer
-            activeCustomer = new Customer(); // without Id
+            activeCustomer = new Customer(); // Without Id
 
         /*
          * Has something changed?
@@ -163,7 +169,7 @@ public class HeadSceneController {
         if (equal) {
             msg = "Nothing changed!";
             return false;
-        }      
+        }
 
         /*
          * Exists this entry in the table twice?
@@ -176,7 +182,7 @@ public class HeadSceneController {
                     return false;
                 }
         }
-        
+
         /*
          * Update tableView
          */
@@ -199,7 +205,7 @@ public class HeadSceneController {
         msg = "";
 
         msg += Check.name(familyNameField.getText(), "Family name");
-        msg += Check.name(streetField.getText(), "Street name");
+        msg += Check.street(streetField.getText(), "Street name");
         msg += Check.name(cityField.getText(), "City name");
         msg += Check.name(firstNameField.getText(), "First name");
         msg += Check.houseNumber(houseNumberField.getText(), "House number");
@@ -236,7 +242,8 @@ public class HeadSceneController {
                                 continue start;
                             }
 
-                            entryCounter = entryCounter < id ? id : entryCounter; // Update entryCounter
+                            entryCounter = entryCounter < id ? id : entryCounter; // Update
+                                                                                  // entryCounter
                             for (Customer c : data)
                                 if (c.getId() == id) {
                                     MyDialog.error("Error in customers input file: Double id value", "Line: " + line).show();
@@ -246,10 +253,12 @@ public class HeadSceneController {
 
                         activeCustomer = new Customer(id, cells[1].trim(), cells[2].trim(), cells[3].trim(), cells[4].trim(),
                                                       cells[5].trim(), cells[6].trim());
-                        // At this point you could check the inputs and check for duplicates.
+                        // At this point you could check the inputs and check
+                        // for duplicates.
                         data.add(activeCustomer);
                     } else
-                        MyDialog.error("Error in customers input file: Too few columns", "Line: " + line).show(); // continue: start
+                        MyDialog.error("Error in customers input file: Too few columns", "Line: " + line).show(); // continue:
+                                                                                                                  // start
                 } catch (Exception e) {
                     MyDialog.error("Error in customers input file", "Line: " + line).show();
                 } finally {
@@ -261,7 +270,7 @@ public class HeadSceneController {
             e.printStackTrace();
         }
 
-        // sorts the data
+        // Sorts the data
         data.sort((o1, o2) -> o1.compareTo(o2));
     }
 
@@ -293,6 +302,8 @@ public class HeadSceneController {
         if (activeCustomer == null) {
             MyDialog.error(null, "No line selected!").showAndWait();
         } else {
+            activeCustomer = null; // Fix
+            loadCustomer();
             data.remove((Object) activeCustomer);
         }
     }

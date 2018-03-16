@@ -1,7 +1,6 @@
 package application.fxml
 
 import application.Customer
-import application.HeadSceneController
 import javafx.scene.layout.Pane
 import javafx.scene.layout.HBox
 import javafx.scene.control.Label
@@ -22,7 +21,13 @@ import javafx.scene.layout.Border
 import javafx.geometry.Insets
 import javafx.scene.control.TextField
 
-component Sample controlledby application.HeadSceneController {
+/**
+ * FX file for GUI design
+ * 
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
+component Sample controlledby application.Controller {
 	VBox {
 		children : [
 			TabPane id tabPane {
