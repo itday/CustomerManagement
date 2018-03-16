@@ -10,7 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+import javax.swing.border.EmptyBorder;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -24,7 +24,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 public class DetailsTab {
 
-    private HeadSceneController controller;
+    private Controller controller;
 
     private JPanel jPanel;
 
@@ -34,7 +34,7 @@ public class DetailsTab {
 
     private Box horzontalBox;
 
-    public DetailsTab(HeadSceneController controller) {
+    public DetailsTab(Controller controller) {
         this.controller = controller;
     }
 
@@ -55,12 +55,13 @@ public class DetailsTab {
     }
 
     private void generateForm() {
-        FormLayout formLayout = new FormLayout("0dlu, right:pref, 3dlu, 160px, 7dlu, right:pref, 3dlu, 160px",
+        FormLayout formLayout = new FormLayout("25dlu, right:pref, 3dlu, 160px, 7dlu, right:pref, 3dlu, 160px",
                                                "10dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu");
         // formLayout.setColumnGroups(new int[][] { { 1, 5 }, { 3, 7 } });
 
         PanelBuilder builder = new PanelBuilder(formLayout);
-        builder.border(BorderFactory.createTitledBorder("Customer details"));
+        builder.border(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10),
+                                                          BorderFactory.createTitledBorder("Customer details")));
 
         CellConstraints cc = new CellConstraints();
 
@@ -101,7 +102,7 @@ public class DetailsTab {
         b2.addActionListener(controller.getHandleReset());
         b3.addActionListener(controller.getHandleSave());
 
-        // Enable saveDetails button
+        // Enables saveDetails button
         if (Main.saveButtonEnabled) {
             b3.setEnabled(true);
         } else {

@@ -9,7 +9,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
- * Wrapper für JTable
+ * Wrapper für {@link JTable}
  *
  * @author Sebastian Müller
  * @since 14.03.2018

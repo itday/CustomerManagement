@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import application.Customer;
-
 /**
- * Auführung von AbstractTableModel für Customer
+ * Own data model for {@link javax.swing.JTable} extends
+ * {@link AbstractTableModel} for data class 'Customer'
  *
  * @author Sebastian Müller
  * @since 14.03.2018

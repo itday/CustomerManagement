@@ -4,7 +4,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 /**
- * Wrapper für DefaultTableColumnModel
+ * Own column model for {@link javax.swing.JTable} extends {@link DefaultTableColumnModel}.
  *
  * @author Sebastian Müller
  * @since 14.03.2018

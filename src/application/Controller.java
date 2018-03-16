@@ -12,9 +12,19 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import application.objects.Customer;
+import application.objects.MyDialog;
 import application.objects.MyJTable;
 
-public class HeadSceneController {
+/**
+ * Builds the GUI.
+ *
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
+
+public class Controller {
+
     private JTabbedPane jTabbedPane;
 
     /*
@@ -48,16 +58,16 @@ public class HeadSceneController {
         customers = new ArrayList<>();
 
         /*
-         * Build gui
+         * Build GUI
          */
         jTabbedPane = new JTabbedPane();
         jFrame.add(jTabbedPane);
 
-        ListTab iLT = new ListTab(this); // input list tab
+        ListTab iLT = new ListTab(this); // Input list tab
         listTab = iLT.draw();
         jTable = iLT.getJTable();
 
-        DetailsTab iDT = new DetailsTab(this); // input details tab
+        DetailsTab iDT = new DetailsTab(this); // Input details tab
         detailsTab = iDT.draw();
         fields = iDT.getFields();
 
@@ -98,7 +108,7 @@ public class HeadSceneController {
 
     public boolean saveCustomer() {
         if (activeCustomer == null) // Add new customer
-            activeCustomer = new Customer(); // without Id
+            activeCustomer = new Customer(); // Without Id
 
         /*
          * Has something changed?
@@ -175,7 +185,7 @@ public class HeadSceneController {
         msg = "";
 
         msg += Check.name(fields[0].getText(), "Family name");
-        msg += Check.name(fields[1].getText(), "Street name");
+        msg += Check.street(fields[1].getText(), "Street name");
         msg += Check.name(fields[2].getText(), "City name");
         msg += Check.name(fields[3].getText(), "First name");
         msg += Check.houseNumber(fields[4].getText(), "House number");
@@ -184,7 +194,7 @@ public class HeadSceneController {
         return msg.isEmpty();
     }
 
-    public void loadData() {
+    private void loadData() {
         try (Scanner scanner = new Scanner(Main.class.getResourceAsStream("/resources/Customers.csv"), StandardCharsets.UTF_8.name())) {
             start: while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
@@ -310,7 +320,7 @@ public class HeadSceneController {
         };
     }
 
-    public void handleSave() {
+    private void handleSave() {
         if (checkFields()) {
             if (saveCustomer()) {
                 MyDialog.info(null, msg);

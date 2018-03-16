@@ -32,7 +32,8 @@ public class Main {
     /**
      * Flag enables some defects (if set to <code>true</code>).
      * <li>Empty fields allowed.</li>
-     * <li>Multiply spaces/hyphen between words (name checks) will be ignored.
+     * <li>Multiply spaces/hyphen between words (name and street checks) will be
+     * ignored.
      * Also allowed: "Ada -Helen"</li>
      * <li>Double entries in database allowed.</li>
      */
@@ -46,13 +47,11 @@ public class Main {
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIcon(jFrame);
-        HeadSceneController controller = new HeadSceneController();
+        Controller controller = new Controller();
         controller.initialize(jFrame);
     }
 
     private void setParameters() {
-        // Man könnte auch direkt auf die Parameter zugreifen, da das aber ein
-        // Port ist, wurde das vermieden
         saveButtonEnabled = Boolean.parseBoolean(System.getProperty("saveButtonEnabled", "true"));
         hardNameChecking = Boolean.parseBoolean(System.getProperty("hardNameChecking", "false"));
         enableDefects = Boolean.parseBoolean(System.getProperty("enableDefects", "false"));

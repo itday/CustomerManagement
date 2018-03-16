@@ -1,7 +1,14 @@
-package application;
+package application.objects;
 
 import java.util.Arrays;
 import java.util.Vector;
+
+/**
+ * Data class for customers
+ *
+ * @author Sebastian Müller
+ * @since 16.03.2018
+ */
 
 public class Customer implements Comparable<Customer> {
 
@@ -99,6 +106,11 @@ public class Customer implements Comparable<Customer> {
             + getZipCode() + ", city: " + getCity() + ", street: " + getStreet() + ", houseNumber: " + getHouseNumber() + "]";
     }
 
+    /**
+     * toString for checks without variable id.
+     * 
+     * @return String for checking
+     */
     public String toSimpleStringWithoutId() {
         return getFamilyName() + getFirstName() + getZipCode() + getCity() + getStreet() + getHouseNumber();
     }

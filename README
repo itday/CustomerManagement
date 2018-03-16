@@ -2,11 +2,12 @@
 # Customer Management
 #
 
-Version: 1.5
+Version: 1.6
 Autor: Sebastian Müller
 
 #
 # Parameters
+
 declaration: -D<NAME>=<VALUE>
 
 enableDefects:
@@ -25,13 +26,19 @@ hardNameChecking:
 #
 # Field checks
 
-Name checks (Family name, street, city, first name):
+Name checks (Family name, city, first name):
   Single,double,triple,quad words separated by a hyphen or a space are allowed.
   3 >= words.length <= 20
   Included symbols: a-zA-ZÜÖÄüöäß
   @see parameter: hardNameChecking
   @see parameter: enableDefects (spaces)
-
+  
+Street check:
+  Single,double,triple,quad words separated by a hyphen or a space are allowed.
+  3 >= words.length <= 20
+  Included symbols: a-zA-ZÜÖÄüöäß.
+  @see parameter: hardNameChecking
+  @see parameter: enableDefects (spaces)
 
 House number check:
   Valid: 1, 12, 123, 1a, 12a, 123a, ...
@@ -42,7 +49,43 @@ ZIP code check:
   Five digits are allowed (nothing else).
 
 #
-# JGoodies librarys needed (for start from source)
+# Events
+
+Add Customer:
+  Goto: Tab "Customer Details"; clear input fields
+  
+Modify Customer:
+  IF (LINE SELECTED)
+    Goto: Tab "Customer Details"; load first selected customer into the input fields.
+  ELSE
+    Dialog: "No line selected!"
+    
+Delete Customer:
+  IF (LINE SELECTED)
+    Delete first selected line.
+  ELSE
+    Dialog: "No line selected!" 
+    
+Cancel:
+  Goto: Tab "All Customers"; clear input fields
+
+Reset:
+  Reloads customer into the input fields.
+  
+Save:
+  IF (input fields correct)
+    Save Customer; clear input fields; dialog: "Customer was saved successfully."; goto tab "All Customers"; 
+  
+  Possible errors (<FIELD> errors also combined):
+    "<FIELD> is empty!"
+    "<FIELD> is to short!"
+    "<FIELD> is to long!"
+    "<FIELD> doesn't fit."
+    "Nothing changed!"
+    "Customer already exists with id <ID> in database!"
+
+#
+# JGoodies librarys needed (for run from source)
 jgoodies-common-1.8.0.jar
 jgoodies-forms-1.8.0.jar
 

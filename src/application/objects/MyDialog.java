@@ -1,9 +1,9 @@
-package application;
+package application.objects;
 
 import javax.swing.JOptionPane;
 
 /**
- * Dialogklasse
+ * Dialog class
  * 
  * @author Sebastian Müller
  * @since 14.03.2018

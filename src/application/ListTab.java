@@ -21,14 +21,14 @@ import application.objects.MyDataModel;
 
 public class ListTab {
 
-    private HeadSceneController controller;
+    private Controller controller;
 
     private JScrollPane jScrollPane;
     private MyJTable    jTable;
     private JPanel      buttonJPanel;
     private Box         verticalBox;
 
-    public ListTab(HeadSceneController controller) {
+    public ListTab(Controller controller) {
         this.controller = controller;
     }
 
