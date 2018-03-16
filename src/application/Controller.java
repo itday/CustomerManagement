@@ -251,7 +251,7 @@ public class Controller {
             e.printStackTrace();
         }
 
-        // sorts the data
+        // Sorts the data
         customers.sort((o1, o2) -> o1.compareTo(o2));
 
         // refresh
