@@ -87,8 +87,8 @@ public class Controller {
      */
 
     public void loadCustomer() {
+        fields[0].requestFocus();
         if (activeCustomer == null) {
-            fields[0].requestFocus();
             fields[0].setText("");
             fields[1].setText("");
             fields[2].setText("");
@@ -96,7 +96,6 @@ public class Controller {
             fields[4].setText("");
             fields[5].setText("");
         } else {
-            fields[0].requestFocus();
             fields[0].setText(activeCustomer.getFamilyName());
             fields[1].setText(activeCustomer.getStreet());
             fields[2].setText(activeCustomer.getCity());
@@ -251,7 +250,7 @@ public class Controller {
             e.printStackTrace();
         }
 
-        // sorts the data
+        // Sorts the data
         customers.sort((o1, o2) -> o1.compareTo(o2));
 
         // refresh

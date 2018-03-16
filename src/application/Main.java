@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 public class Main {
     private JFrame jFrame;
 
-    private static final int HEIGHT = 700;
-    private static final int WEIDTH = 480;
+    private static final int WEIDTH = 700;
+    private static final int HEIGHT = 480;
 
     /**
      * Flag: Save button in details view/tab enabled or not.
@@ -43,7 +43,7 @@ public class Main {
         setParameters();
 
         jFrame = new JFrame("Customer Management");
-        jFrame.setSize(HEIGHT, WEIDTH);
+        jFrame.setSize(WEIDTH, HEIGHT);
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIcon(jFrame);
