@@ -25,8 +25,12 @@ hardNameChecking:
 
 #
 # Field checks
+<<<<<<< HEAD
 
 Name checks (Family name, city, first name):
+=======
+Name checks (Family name, street, city, first name):
+>>>>>>> c8c18912cda2c15c6445c990b6cd05c920f87e62
   Single,double,triple,quad words separated by a hyphen or a space are allowed.
   3 >= words.length <= 20
   Included symbols: a-zA-ZÜÖÄüöäß
