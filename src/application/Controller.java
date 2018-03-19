@@ -47,7 +47,6 @@ public class Controller {
     private Customer            activeCustomer;
 
     // Message string for errors
-    private String header;
     private String msg;
 
     /*
@@ -180,7 +179,6 @@ public class Controller {
 
     public boolean checkFields() {
 
-        header = "Error while checking text fields!";
         msg = "";
 
         msg += Check.name(fields[0].getText(), "Family name");
@@ -189,6 +187,9 @@ public class Controller {
         msg += Check.name(fields[3].getText(), "First name");
         msg += Check.houseNumber(fields[4].getText(), "House number");
         msg += Check.zipCode(fields[5].getText(), "ZIP code");
+
+        if (!msg.isEmpty())
+            msg = "Error while checking text fields:\n" + msg;
 
         return msg.isEmpty();
     }
@@ -322,15 +323,15 @@ public class Controller {
     private void handleSave() {
         if (checkFields()) {
             if (saveCustomer()) {
-                MyDialog.info(null, msg);
+                MyDialog.info("Information dialog", msg);
                 activeCustomer = null;
                 loadCustomer();
                 jTable.getModel().refresh();
                 jTabbedPane.setSelectedComponent(listTab);
             } else
-                MyDialog.error(null, msg);
+                MyDialog.error("Error dialog", msg);
         } else
-            MyDialog.error(header, msg);
+            MyDialog.error("Error dialog", msg);
     }
 
     public KeyListener getHandleEnterSave() {
