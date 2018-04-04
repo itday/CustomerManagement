@@ -20,6 +20,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.Border
 import javafx.geometry.Insets
 import javafx.scene.control.TextField
+import javafx.embed.swing.SwingNode
+import javax.swing.JButton
 
 /**
  * FX file for GUI design
@@ -89,6 +91,21 @@ component Sample controlledby application.Controller {
 								},
 								VBox {
 									children : [
+										/*SwingNode id node_add {
+											content : JButton id add {
+												text : "Add Customer"
+											}
+										},
+										SwingNode id node_modify {
+											content : JButton id modify {
+												text : "Modify Customer"
+											}
+										},
+										SwingNode id node_delete {
+											content : JButton id delete {
+												text : "Delete Customer"
+											}
+										},*/
 										Button {
 											text : "Add Customer",
 											minWidth : 200,
@@ -234,10 +251,25 @@ component Sample controlledby application.Controller {
 										},
 										HBox {
 											children : [
+												/*SwingNode id node_cancel {
+													content : JButton id cancel {
+														text : "Cancel"
+													}
+												},
+												SwingNode id node_reset {
+													content : JButton id reset {
+														text : "Reset Details"
+													}
+												},
+												SwingNode id node_save {
+													content : JButton id save {
+														text : "Save Details"
+													}
+												},*/
 												Button {
 													text : "Cancel",
 													minWidth : 110,
-													onMouseClicked : controllermethod handleCancle
+													onMouseClicked : controllermethod handleCancel
 												},
 												Button {
 													text : "Reset Details",

@@ -139,7 +139,7 @@
 											<Region prefWidth="2000"/> 
 											<HBox> 
 												<children>
-													<Button text="Cancel" minWidth="110" onMouseClicked="#handleCancle"/> 
+													<Button text="Cancel" minWidth="110" onMouseClicked="#handleCancel"/> 
 													<Button text="Reset Details" minWidth="110" onMouseClicked="#handleReset"/> 
 													<Button fx:id="saveDetails" text="Save Details" minWidth="110" disable="true" onMouseClicked="#handleSave"/> 
 												</children>

@@ -1,7 +1,13 @@
 package application;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+
+import javax.swing.JButton;
+
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 /**
- * Controller for FXMl file.
+ * Controller for FXML file.
  *
  * @author Sebastian Müller
  * @since 16.03.2018
@@ -42,6 +48,12 @@ public class Controller {
     private int entryCounter = 0;
 
     /*
+     * @FXML private JButton add;
+     * @FXML private JButton modify;
+     * @FXML private JButton delete;
+     */
+
+    /*
      * detailsTab
      */
 
@@ -57,6 +69,12 @@ public class Controller {
     @FXML private TextField houseNumberField;
     @FXML private TextField zipCodeField;
 
+    /*
+     * @FXML private JButton cancel;
+     * @FXML private JButton reset;
+     * @FXML private JButton save;
+     */
+
     @FXML private Button saveDetails;
 
     // Message string for errors
@@ -70,10 +88,21 @@ public class Controller {
     public void initialize() {
         data = tableView.getItems();
 
+        /*
+         * Swing
+         * add.addActionListener(getHandleAdd());
+         * modify.addActionListener(getHandleModify());
+         * delete.addActionListener(getHandleDelete());
+         * cancel.addActionListener(getHandleCancel());
+         * reset.addActionListener(getHandleReset());
+         * save.addActionListener(getHandleSave());
+         * /
+         */
+
         // Load data
         loadData();
 
-        // tableView resizing (could  be better)
+        // tableView resizing (could be better)
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         idTableColumn.setMaxWidth(30.0);
         idTableColumn.setMinWidth(30.0);
@@ -278,11 +307,19 @@ public class Controller {
      * FXML handler for actions
      */
 
+    public ActionListener getHandleAdd() {
+        return (e) -> Platform.runLater(() -> handleAdd());
+    }
+
     @FXML
     public void handleAdd() {
         activeCustomer = null;
         tabPane.getSelectionModel().select(tabDetail);
         loadCustomer();
+    }
+
+    public ActionListener getHandleModify() {
+        return (e) -> Platform.runLater(() -> handleModify());
     }
 
     @FXML
@@ -296,28 +333,44 @@ public class Controller {
         }
     }
 
+    public ActionListener getHandleDelete() {
+        return (e) -> Platform.runLater(() -> handleDelete());
+    }
+
     @FXML
     public void handleDelete() {
         activeCustomer = (Customer) tableView.getSelectionModel().getSelectedItem();
         if (activeCustomer == null) {
             MyDialog.error(null, "No line selected!").showAndWait();
         } else {
+            data.remove((Object) activeCustomer);
             activeCustomer = null; // Fix
             loadCustomer();
-            data.remove((Object) activeCustomer);
         }
     }
 
+    public ActionListener getHandleCancel() {
+        return (e) -> Platform.runLater(() -> handleCancel());
+    }
+
     @FXML
-    public void handleCancle() {
+    public void handleCancel() {
         tabPane.getSelectionModel().select(tabList);
         activeCustomer = null;
         loadCustomer();
     }
 
+    public ActionListener getHandleReset() {
+        return (e) -> Platform.runLater(() -> handleReset());
+    }
+
     @FXML
     public void handleReset() {
         loadCustomer();
+    }
+
+    public ActionListener getHandleSave() {
+        return (e) -> Platform.runLater(() -> handleSave());
     }
 
     @FXML
