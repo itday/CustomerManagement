@@ -2,8 +2,9 @@
 # Customer Management
 #
 
-Version: 1.6
-Autor: Sebastian Müller
+version: 1.7
+autor: Sebastian Müller
+required java version: 1.8.0 
 
 #
 # Parameters
@@ -85,11 +86,13 @@ Save:
     "Customer already exists with id <ID> in database!"
 
 #
-# Third party licenses 
+# Third party licenses
+
 Icon made from Icon Fonts (http://www.onlinewebfonts.com/icon) is licensed by CC BY 3.0.
 
 #
 # License
+
 Creative Commons by 3.0
 
 #

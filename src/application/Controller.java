@@ -1,11 +1,8 @@
 package application;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-
-import javax.swing.JButton;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
