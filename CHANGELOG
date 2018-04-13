@@ -11,5 +11,14 @@ Now UFT can differ between an error and an information:
 
 Add a CHANGELOG file.
 
+# 1.8
+Restructuring the storage method (for customer)
+
+Reset button and double entry error works better; new structure (application/Controller)
+Enter saves the customer details (application/DetailsTab).
+Removes empty fields (in Customer class) and add clone method (application/objects/Customer).
+Add README information about VM params. Spaces at the beginning and at the end are ignored (README).
+Swap old jar to new one (Version 1.8).
+
 #
 # eof .. 

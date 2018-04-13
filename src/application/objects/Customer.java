@@ -10,7 +10,7 @@ import java.util.Vector;
  * @since 16.03.2018
  */
 
-public class Customer implements Comparable<Customer> {
+public class Customer implements Comparable<Customer>, Cloneable {
 
     private Vector<String> vector;
 
@@ -21,17 +21,36 @@ public class Customer implements Comparable<Customer> {
 
     public Customer(int id, String familyName, String firstName, String zipCode, String city, String street, String houseNumber) {
         this();
-        vector.add(0, "" + id); // 0
-        vector.add(1, familyName); // 1
-        vector.add(2, firstName); // 2
-        vector.add(3, zipCode); // 3
-        vector.add(4, city); // 4
-        vector.add(5, street); // 5
-        vector.add(6, houseNumber); // 6
+        vector.set(0, "" + id); // 0
+        vector.set(1, familyName); // 1
+        vector.set(2, firstName); // 2
+        vector.set(3, zipCode); // 3
+        vector.set(4, city); // 4
+        vector.set(5, street); // 5
+        vector.set(6, houseNumber); // 6
     }
+
+    /**
+     * Returns the data from this object.
+     * 
+     * @return Vector (length == 7) with data from this object
+     */
 
     public Vector<String> getVector() {
         return vector;
+    }
+
+    /**
+     * Sets the data.
+     * 
+     * @param customer Vector (length == 7) with data
+     */
+
+    public void setVektor(Vector<String> customer) {
+        if (customer == null || customer.size() != 7)
+            return;
+
+        vector = customer;
     }
 
     public int getId() { // 0
@@ -88,6 +107,11 @@ public class Customer implements Comparable<Customer> {
 
     public void setHouseNumber(String houseNumber) {
         vector.set(6, houseNumber);
+    }
+
+    @Override
+    public Customer clone() {
+        return new Customer(getId(), getFamilyName(), getFirstName(), getZipCode(), getCity(), getStreet(), getHouseNumber());
     }
 
     @Override

@@ -105,45 +105,26 @@ public class Controller {
     }
 
     public boolean saveCustomer() {
-        if (activeCustomer == null) // Add new customer
-            activeCustomer = new Customer(); // Without Id
+        if (activeCustomer == null)
+            activeCustomer = new Customer();
 
         /*
          * Has something changed?
          */
-
         boolean equal = true;
-        String tmp = fields[0].getText().trim();
 
-        if (!tmp.equals(activeCustomer.getFamilyName())) {
-            activeCustomer.setFamilyName(tmp);
+        if (!getField(0).equals(activeCustomer.getFamilyName()))
             equal = false;
-        }
-
-        if (!(tmp = fields[1].getText().trim()).equals(activeCustomer.getStreet())) {
-            activeCustomer.setStreet(tmp);
+        else if (!getField(1).equals(activeCustomer.getStreet()))
             equal = false;
-        }
-
-        if (!(tmp = fields[2].getText().trim()).equals(activeCustomer.getCity())) {
-            activeCustomer.setCity(tmp);
+        else if (!getField(2).equals(activeCustomer.getCity()))
             equal = false;
-        }
-
-        if (!(tmp = fields[3].getText().trim()).equals(activeCustomer.getFirstName())) {
-            activeCustomer.setFirstName(tmp);
+        else if (!getField(3).equals(activeCustomer.getFirstName()))
             equal = false;
-        }
-
-        if (!(tmp = fields[4].getText().trim()).equals(activeCustomer.getHouseNumber())) {
-            activeCustomer.setHouseNumber(tmp);
+        else if (!getField(4).equals(activeCustomer.getHouseNumber()))
             equal = false;
-        }
-
-        if (!(tmp = fields[5].getText().trim()).equals(activeCustomer.getZipCode())) {
-            activeCustomer.setZipCode(tmp);
+        else if (!getField(5).equals(activeCustomer.getZipCode()))
             equal = false;
-        }
 
         if (equal) {
             msg = "Nothing changed!";
@@ -153,28 +134,37 @@ public class Controller {
         /*
          * Exists this entry in the table twice?
          */
+        Customer customer = new Customer(activeCustomer.getId(), getField(0),getField(3),getField(5),getField(2),getField(1),getField(4));
+
         if (!Main.enableDefects) {
-            String simpleString = activeCustomer.toSimpleStringWithoutId();
+            String simpleString = customer.toSimpleStringWithoutId();
             for (Customer c : customers)
-                if (activeCustomer != c && c.toSimpleStringWithoutId().equals(simpleString)) {
+                if (c.toSimpleStringWithoutId().equals(simpleString)) {
                     msg = "Customer already exists with id " + c.getId() + " in database!";
                     return false;
                 }
         }
 
+        // The customer passed every check -> update data
+        activeCustomer.setVektor(customer.getVector());
+
         /*
          * Update tableView
          */
-
-        if (!customers.contains(activeCustomer)) {
+        if (!customers.contains(activeCustomer)) { // a new entry
             activeCustomer.setId(++entryCounter);
             customers.add(activeCustomer);
         }
+
         jTable.getModel().refresh();
         jTable.updateSize();
 
         msg = "Customer was saved successfully.";
         return true; // !equal
+    }
+
+    private String getField(int index) {
+        return fields[index].getText().trim();
     }
 
     public boolean checkFields() {
@@ -269,8 +259,8 @@ public class Controller {
     public ActionListener getHandleAdd() {
         return (e) -> {
             activeCustomer = null;
-            jTabbedPane.setSelectedComponent(detailsTab);
             loadCustomer();
+            jTabbedPane.setSelectedComponent(detailsTab);
         };
     }
 
@@ -280,8 +270,8 @@ public class Controller {
             if (activeCustomer == null) {
                 MyDialog.error(null, "No line selected!");
             } else {
-                jTabbedPane.setSelectedComponent(detailsTab);
                 loadCustomer();
+                jTabbedPane.setSelectedComponent(detailsTab);
             }
         };
     }
@@ -293,7 +283,7 @@ public class Controller {
                 MyDialog.error(null, "No line selected!");
             } else {
                 customers.remove(activeCustomer);
-                activeCustomer = null; // Fix
+                activeCustomer = null;
                 loadCustomer();
                 jTable.getModel().refresh();
             }
@@ -326,7 +316,6 @@ public class Controller {
                 MyDialog.info("Information dialog", msg);
                 activeCustomer = null;
                 loadCustomer();
-                jTable.getModel().refresh();
                 jTabbedPane.setSelectedComponent(listTab);
             } else
                 MyDialog.error("Error dialog", msg);

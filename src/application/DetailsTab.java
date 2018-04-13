@@ -88,6 +88,9 @@ public class DetailsTab {
         builder.addLabel("ZIP code", cc.xy(6, r));
         builder.add(fields[5] = new JTextField(), cc.xy(8, r));
 
+        for (JTextField field : fields)
+            field.addKeyListener(controller.getHandleEnterSave());
+
         formPanel = builder.getPanel();
     }
 

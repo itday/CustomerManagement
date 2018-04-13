@@ -2,13 +2,14 @@
 # Customer Management
 #
 
-Version: 1.7
-Autor: Sebastian Müller
+version: 1.8
+autor: Sebastian Müller
 
 #
 # Parameters
 
 declaration: -D<NAME>=<VALUE>
+example: java -DenableDefects=true -DhardNameChecking=true -DsaveButtonEnabled=false -jar CustomerManagement_V1.8.jar
 
 enableDefects:
   by false (default): Empty fields allowed.
@@ -24,7 +25,7 @@ hardNameChecking:
   by false (default): forbidden: "von helen" allowed: "von Helen"
 
 #
-# Field checks
+# Field checks (spaces at the beginning and at the end are ignored)
 
 Name checks (Family name, city, first name):
   Single,double,triple,quad words separated by a hyphen or a space are allowed.
@@ -86,6 +87,7 @@ Save:
 
 #
 # JGoodies librarys needed
+
 Available at 'http://www.jgoodies.com/downloads/archive/'.
 Tested with
   jgoodies-common-1.8.1.jar
@@ -93,6 +95,7 @@ Tested with
 
 #
 # Third party licenses 
+
 Icon made from Icon Fonts (http://www.onlinewebfonts.com/icon) is licensed by CC BY 3.0.
 
               The BSD License for the JGoodies Common
@@ -159,6 +162,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #
 # License
+
 Creative Commons by 3.0
 
 #
