@@ -1,0 +1,15 @@
+#
+# CHANGELOG
+#
+
+# 1.7
+Creates titles for dialogs: "Information dialog" and "Error dialog"
+
+Now UFT can differ between an error and an information:
+  JavaDialog("Information dialog").JavaButton("OK").Click
+  JavaDialog("Error dialog").JavaButton("OK").Click
+
+Add a CHANGELOG file.
+
+#
+# eof .. 
