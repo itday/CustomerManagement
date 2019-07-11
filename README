@@ -10,11 +10,13 @@ required java version: 1.8.0
 # Parameters
 
 declaration: --<NAME>=<VALUE>
+example: java -DenableDefects=true -DhardNameChecking=true -DsaveButtonEnabled=false -jar CustomerManagement_V1.7.jar
 
 enableDefects:
-  by false (default): Empty fields allowed.
-                      Multiply spaces/hyphen between words (name checks) will be ignored. Also allowed: "Ada -Helen"
-                      Double entries in database allowed.
+  by false: Empty fields allowed.
+            Multiply spaces/hyphen between words (name checks) will be ignored. Also allowed: "Ada -Helen"
+            Double entries in database allowed.
+  Default is true.
 
 saveButtonEnabled:
   by true (default): Save button in details tab is always enabled (checks are executed after clicking save).
